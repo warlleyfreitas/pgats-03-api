@@ -4,10 +4,10 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 
 // Aplicação
-const app = require('../../app');
+const app = require('../../../app');
 
 // Mock
-const transferService = require('../../service/transferService');
+const transferService = require('../../../service/transferService');
 
 // Testes
 describe('Transfer Controller', () => {
@@ -17,7 +17,7 @@ describe('Transfer Controller', () => {
             const respostaLogin = await request(app)
                 .post('/users/login')
                 .send({
-                    username: 'julio',
+                    username: 'warlley',
                     password: '123456'
                 });
 
@@ -29,8 +29,8 @@ describe('Transfer Controller', () => {
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
-                    from: "julio",
-                    to: "isabelle",
+                    from: "warlley",
+                    to: "bobgoodies",
                     value: 100
                 });
             
@@ -47,8 +47,8 @@ describe('Transfer Controller', () => {
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
-                    from: "julio",
-                    to: "priscila",
+                    from: "warlley",
+                    to: "julio",
                     value: 100
                 });
             
@@ -60,8 +60,8 @@ describe('Transfer Controller', () => {
             // Mocar apenas a função transfer do Service
             const transferServiceMock = sinon.stub(transferService, 'transfer');
             transferServiceMock.returns({ 
-                from: "julio", 
-                to: "priscila", 
+                from: "warlley", 
+                to: "julio", 
                 value: 100, 
                 date: new Date().toISOString() 
             });
@@ -70,15 +70,15 @@ describe('Transfer Controller', () => {
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
-                    from: "julio",
-                    to: "priscilaaaaaaaaaaa",
+                    from: "warlley",
+                    to: "julio",
                     value: 100
                 });
             
             expect(resposta.status).to.equal(201);
             
             // Validação com um Fixture
-            const respostaEsperada = require('../fixture/respostas/quandoInformoValoresValidosEuTenhoSucessoCom201Created.json')
+            const respostaEsperada = require('../../fixture/respostas/quandoInformoValoresValidosEuTenhoSucessoCom201Created.json')
             delete resposta.body.date;
             delete respostaEsperada.date; 
             expect(resposta.body).to.deep.equal(respostaEsperada);
