@@ -27,7 +27,6 @@ describe('Testes de Transferência', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(createTransfer);
 
-        console.log(respostaTransferencia.body);
         expect(respostaTransferencia.status).to.equal(200);
         expect(respostaTransferencia.body.data.createTransfer)
             .excluding('date') // Ignorar o campo date na comparação
