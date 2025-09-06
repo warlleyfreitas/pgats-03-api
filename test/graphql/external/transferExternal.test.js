@@ -5,7 +5,7 @@ require('dotenv').config();
 const chaiExclude = require('chai-exclude');
 use(chaiExclude);
 
-describe.only('Testes de Transferência', () => {
+describe('Testes de Transferência', () => {
 
     before(async () => {
         const loginUser = require('../fixture/requisicoes/login/loginUser.json');
@@ -21,12 +21,13 @@ describe.only('Testes de Transferência', () => {
     });
 
     it('Validar que é possível transferir grana entre duas contas', async () => {
-        const respostaEsperada = require('../fixture/respostas/transferencia/validarQueEpossivelTransferirGranaEntreDuasContas.json');
+        const respostaEsperada = require('../fixture/respostas/transferencia/validarQueEPossivelTransferirGranaEntreDuasContas.json');
         const respostaTransferencia = await request(process.env.BASE_URL_GRAPHQL)
             .post('')
             .set('Authorization', `Bearer ${token}`)
             .send(createTransfer);
 
+        console.log(respostaTransferencia.body);
         expect(respostaTransferencia.status).to.equal(200);
         expect(respostaTransferencia.body.data.createTransfer)
             .excluding('date') // Ignorar o campo date na comparação
